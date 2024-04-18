@@ -1,9 +1,13 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:chat_app/presentation/pages/chat/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chat_app/presentation/pages/auth/auth_screen.dart';
+
+Stream<User?> _userStream = FirebaseAuth.instance.authStateChanges();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +31,15 @@ class App extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 63, 17, 177),
         ),
       ),
-      home: const AuthScreen(),
+      home: StreamBuilder(
+        stream: _userStream,
+        builder: (ctx, snapshot) {
+          if (snapshot.hasData) {
+            return const ChatScreen();
+          }
+          return const AuthScreen();
+        },
+      ),
     );
   }
 }
