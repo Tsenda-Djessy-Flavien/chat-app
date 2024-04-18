@@ -30,36 +30,41 @@ class _AuthScreenState extends State<AuthScreen> {
     debugPrint(enteredEmailAddress);
     debugPrint(enteredPassword);
 
-    if (_isLogin) {
-    } else {
-      try {
+    try {
+      if (_isLogin) {
+        final userCredential = await _auth.signInWithEmailAndPassword(
+          email: enteredEmailAddress,
+          password: enteredPassword,
+        );
+        print(userCredential);
+      } else {
         final userCredential = await _auth.createUserWithEmailAndPassword(
           email: enteredEmailAddress,
           password: enteredPassword,
         );
         print(userCredential);
-      } on FirebaseAuthException catch (e) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.message ?? "Authentication Failed."),
-          ),
-        );
-        // if (e.code == 'weak-password') {
-        //   debugPrint('The password provided is too weak.');
-        // } else if (e.code == 'email-already-in-use') {
-        //   debugPrint('The account already exists for that email.');
-        // }
       }
-      // catch (e) {
-      //   ScaffoldMessenger.of(context).clearSnackBars();
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: Text(e.toString() ?? "Authentication Failed."),
-      //     ),
-      //   );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message ?? "Authentication Failed."),
+        ),
+      );
+      // if (e.code == 'weak-password') {
+      //   debugPrint('The password provided is too weak.');
+      // } else if (e.code == 'email-already-in-use') {
+      //   debugPrint('The account already exists for that email.');
       // }
     }
+    // catch (e) {
+    //   ScaffoldMessenger.of(context).clearSnackBars();
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text(e.toString() ?? "Authentication Failed."),
+    //     ),
+    //   );
+    // }
   }
 
   @override
