@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:chat_app/presentation/pages/chat/chat.dart';
+import 'package:chat_app/presentation/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -34,6 +35,9 @@ class App extends StatelessWidget {
       home: StreamBuilder(
         stream: _userStream,
         builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          }
           if (snapshot.hasData) {
             return const ChatScreen();
           }
