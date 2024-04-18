@@ -1,6 +1,11 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:chat_app/configs/translate/text.dart';
 import 'package:chat_app/utils/image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -16,13 +21,45 @@ class _AuthScreenState extends State<AuthScreen> {
   var enteredEmailAddress = "";
   var enteredPassword = "";
 
-  void _submit() {
+  void _submit() async {
     var isValid = _form.currentState!.validate();
-    if (isValid) {
-      _form.currentState!.save();
-      debugPrint(enteredEmailAddress);
-      debugPrint(enteredPassword);
-    } else {}
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+    debugPrint(enteredEmailAddress);
+    debugPrint(enteredPassword);
+
+    if (_isLogin) {
+    } else {
+      try {
+        final userCredential = await _auth.createUserWithEmailAndPassword(
+          email: enteredEmailAddress,
+          password: enteredPassword,
+        );
+        print(userCredential);
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message ?? "Authentication Failed."),
+          ),
+        );
+        // if (e.code == 'weak-password') {
+        //   debugPrint('The password provided is too weak.');
+        // } else if (e.code == 'email-already-in-use') {
+        //   debugPrint('The account already exists for that email.');
+        // }
+      }
+      // catch (e) {
+      //   ScaffoldMessenger.of(context).clearSnackBars();
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       content: Text(e.toString() ?? "Authentication Failed."),
+      //     ),
+      //   );
+      // }
+    }
   }
 
   @override
