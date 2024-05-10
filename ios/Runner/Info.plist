@@ -6,6 +6,10 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Chat App</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Privacy - Photo Library Usage Description</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Privacy - Camera Usage Description</string>
 	<key>FLTEnableImpeller</key>
 	<false />
 	<key>CFBundleExecutable</key>
