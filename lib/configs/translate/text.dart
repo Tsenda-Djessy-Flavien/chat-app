@@ -9,4 +9,6 @@ class ConstantsText {
   final String kInvalidAddress = "Please enter a valid email address";
   final String kInvalidUsername = "Please enter at least 4 characters.";
   final String kInvalidPassword = "Password must be at least 6 characters long";
+
+  final String kSendMessage = 'Send a message...';
 }
